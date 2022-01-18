@@ -7,5 +7,6 @@ import { authMiddleWare } from '../middleware/auth-middleware'
 const router = Router()
 
 router.get('/', authMiddleWare, AsyncHandler(UserController.getAll))
+router.put('/:id', authMiddleWare, AsyncHandler(UserController.updateUser))
 
 export default router
