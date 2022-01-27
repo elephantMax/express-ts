@@ -25,7 +25,7 @@ app.use(
   })
 )
 
-app.use('/files', authMiddleWare, express.static('./src/uploads'))
+app.use('/files', express.static('./src/uploads'))
 
 app.use(fileUpload())
 
