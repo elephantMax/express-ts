@@ -91,10 +91,13 @@ class UserService {
     return { ...tokens, user: userDto }
   }
 
-  async updateUser(id: ObjectId, user: UserType) {
+  async updateUser(id: string, user: UserType) {
     await User.findByIdAndUpdate(id, user)
 
-    return await User.findById(id)
+    const userData = await User.findById(id)
+    const userDto = new UserDto(userData)
+
+    return { ...userDto }
   }
 
   async removeById(id: ObjectId) {

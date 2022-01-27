@@ -3,6 +3,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
+import fileUpload from 'express-fileupload'
 
 //config
 import config from '../config'
@@ -13,6 +14,7 @@ import users from './router/users'
 
 //middlewares
 import error from './middleware/error-middleware'
+import { authMiddleWare } from './middleware/auth-middleware'
 
 const app = express()
 
@@ -22,6 +24,11 @@ app.use(
     credentials: true,
   })
 )
+
+app.use('/files', express.static('./src/uploads'))
+
+app.use(fileUpload())
+
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.get('/', (req: Request, res: Response) =>

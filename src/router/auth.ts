@@ -2,20 +2,19 @@ import { Router } from 'express'
 import AsyncHandler from 'express-async-handler'
 
 import AuthController from '../controllers/AuthController'
-import { body } from 'express-validator'
+import { SignInSchema, SignUpSchema } from '../validators/user-validator'
+import { checkSchema } from 'express-validator'
 
 const router = Router()
 
 router.post(
   '/signup',
-  body('login').isLength({ min: 3, max: 32 }),
-  body('password').isLength({ min: 3, max: 32 }),
+  checkSchema(SignUpSchema),
   AsyncHandler(AuthController.signup)
 )
 router.post(
   '/signin',
-  body('login').isLength({ min: 3, max: 32 }),
-  body('password').isLength({ min: 3, max: 32 }),
+  checkSchema(SignInSchema),
   AsyncHandler(AuthController.signin)
 )
 router.post('/logout', AsyncHandler(AuthController.logout))
