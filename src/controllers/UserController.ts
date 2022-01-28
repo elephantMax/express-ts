@@ -3,6 +3,8 @@ import { UploadedFile } from 'express-fileupload'
 import { validationResult } from 'express-validator'
 import UserDto from '../dtos/UserDto'
 import ApiError from '../exceptions/api-error'
+import { FileTypes } from '../models/File'
+import FileService from '../services/FileService'
 
 import userService from '../services/UserService'
 
@@ -24,12 +26,19 @@ class UserController {
 
       const data = req.body
       if (req.files) {
+        const currentUser = await userService.getById(req.user.id)
         const avatar = req.files.avatar as UploadedFile
-        const ext = avatar.mimetype.split('/')[1]
-        const fullName = `${avatar.md5}.${ext}`
-        const filePath = `${__dirname}/../uploads/${fullName}`
-        avatar.mv(filePath)
-        data.avatar = `/files/${fullName}`
+        if (currentUser?.avatar) {
+          const fileData = await FileService.update(avatar, currentUser.avatar)
+          data.avatar = fileData.id
+        } else {
+          const fileData = await FileService.create(
+            avatar,
+            currentUser?.id,
+            FileTypes.AVATAR
+          )
+          data.avatar = fileData.id
+        }
       }
 
       const { id } = req.params

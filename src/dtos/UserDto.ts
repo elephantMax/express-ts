@@ -1,17 +1,9 @@
-import { ObjectId, Schema } from 'mongoose'
+import { ObjectId } from 'mongoose'
 
-interface UserDtoI {
+class UserDto {
   login: string
   id: ObjectId
-  name: string
-  about: string
-  avatar: string
-}
-
-class UserDto implements UserDtoI {
-  login: string
-  id: Schema.Types.ObjectId
-  avatar: string
+  avatar: ObjectId
   name: string
   about: string
 
