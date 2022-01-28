@@ -11,10 +11,10 @@ import config from '../config'
 //routes
 import auth from './router/auth'
 import users from './router/users'
+import files from './router/files'
 
 //middlewares
 import error from './middleware/error-middleware'
-import { authMiddleWare } from './middleware/auth-middleware'
 
 const app = express()
 
@@ -27,7 +27,11 @@ app.use(
 
 app.use('/files', express.static('./src/uploads'))
 
-app.use(fileUpload())
+app.use(
+  fileUpload({
+    createParentPath: true,
+  })
+)
 
 app.use(bodyParser.json())
 app.use(cookieParser())
@@ -39,6 +43,7 @@ app.get('/', (req: Request, res: Response) =>
 
 app.use('/api', auth)
 app.use('/api/users', users)
+app.use('/api/files', files)
 
 //error middleware
 app.use(error)

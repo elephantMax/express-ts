@@ -1,11 +1,11 @@
-import mongoose from 'mongoose'
+import mongoose, { ObjectId, Schema } from 'mongoose'
 
 export interface User {
   login: string
   password: string
   name: string
   about?: string
-  avatar?: string
+  avatar?: ObjectId
   token?: string
 }
 
@@ -27,7 +27,8 @@ const schema = new mongoose.Schema<User>(
       type: String,
     },
     avatar: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'File',
     },
     token: {
       type: String,

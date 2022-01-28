@@ -11,6 +11,10 @@ class UserService {
     return await User.find({}).lean()
   }
 
+  async getById(id: string){
+    return await User.findById(id)
+  }
+
   async getUserByLoginPassword({
     login,
     password,
